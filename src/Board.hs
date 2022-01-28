@@ -1,4 +1,4 @@
-module Board where
+module Board (PieceType (..), EnPassantStatus (..), Color (..), Piece (..), Rank (..), File (..), Square, Board, maybePiece, opponentOf, pieceAt) where
 
 import Data.Array.IArray
 
@@ -27,3 +27,13 @@ data File = One | Two | Three | Four | Five | Six | Seven | Eight deriving (Show
 type Square = (Rank, File)
 
 type Board = Array Square (Maybe Piece)
+
+maybePiece :: Color -> PieceType -> Maybe Piece
+maybePiece c = Just . Piece c
+
+opponentOf :: Color -> Color
+opponentOf White = Black
+opponentOf Black = White
+
+pieceAt :: Board -> Square -> Maybe Piece
+pieceAt b sq = b ! sq
