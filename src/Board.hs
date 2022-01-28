@@ -24,11 +24,11 @@ data Piece = Piece
   }
   deriving (Eq, Show)
 
-data Rank = A | B | C | D | E | F | G | H deriving (Show, Eq, Enum, Ord, Ix)
+data File = A | B | C | D | E | F | G | H deriving (Show, Eq, Enum, Ord, Ix)
 
-data File = One | Two | Three | Four | Five | Six | Seven | Eight deriving (Show, Eq, Enum, Ord, Ix)
+data Rank = One | Two | Three | Four | Five | Six | Seven | Eight deriving (Show, Eq, Enum, Ord, Ix)
 
-type Square = (Rank, File)
+type Square = (File, Rank)
 
 type Board = Array Square (Maybe Piece)
 
