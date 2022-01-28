@@ -24,6 +24,38 @@ initialGame = Game {currentPlayer = White, gameBoard = listArray ((A, One), (H, 
     pieceOrder :: [PieceType]
     pieceOrder = [UnmovedRook, Knight, Bishop, Queen, UnmovedKing, Bishop, Knight, UnmovedRook]
 
-projectMove :: Move -> Board -> S.Seq Square
-projectMove (Move (MKingMv KUp) (r, f) piece) board = if f == Eight || fmap color (pieceAt board (r, succ f)) == Just (color piece) then [] else [(r, succ f)]
-projectMove _ _ = error "Not yet implemented"
+attackedSquares :: Move -> Board -> S.Seq Square
+attackedSquares (Move (MKingMv dir) sq piece) board = movedKingMove dir sq (color piece) board
+attackedSquares _ _ = error "Not yet implemented"
+
+movedKingMove :: MovedKingMove -> Square -> Color -> Board -> S.Seq Square
+movedKingMove dir (f, r) c b = if Just r == maxRank || Just f == maxFile || fmap color (pieceAt b attackedSquare) == Just c then [] else [attackedSquare]
+  where
+    attackedSquare :: Square
+    attackedSquare = case dir of
+      KUpLeft -> (pred f, succ r)
+      KUp -> (f, succ r)
+      KUpRight -> (succ f, succ r)
+      KRight -> (succ f, r)
+      KDownRight -> (succ f, pred r)
+      KDown -> (f, pred r)
+      KDownLeft -> (pred f, pred r)
+      KLeft -> (pred f, r)
+    maxRank :: Maybe Rank
+    maxRank = case dir of
+      KUpLeft -> Just Eight
+      KUp -> Just Eight
+      KUpRight -> Just Eight
+      KDownLeft -> Just One
+      KDown -> Just One
+      KDownRight -> Just One
+      _ -> Nothing
+    maxFile :: Maybe File
+    maxFile = case dir of
+      KUpLeft -> Just A
+      KLeft -> Just A
+      KDownLeft -> Just A
+      KUpRight -> Just H
+      KRight -> Just H
+      KDownRight -> Just H
+      _ -> Nothing

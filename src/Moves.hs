@@ -13,6 +13,8 @@ data MoveType
   | QueenMv QueenMove
   deriving (Show)
 
+-- Some datatypes reference a direction (Up, Down, etc.). The frame of reference is White's perspective
+
 data UnmovedKingMove = CastleLong | CastleShort | MKingMove MovedKingMove deriving (Show) -- Unmoved kings can castle
 
 data MovedKingMove = KUp | KDown | KLeft | KRight | KUpLeft | KUpRight | KDownRight | KDownLeft deriving (Show)
