@@ -12,15 +12,15 @@ data MoveType
   | KnightMv KnightMove
   | QueenMv QueenMove
 
-data MovedKingMove = CastleLong | CastleShort | UKingMove KingDir
+data UnmovedKingMove = CastleLong | CastleShort | MKingMove KingDir -- Unmoved kings can castle
 
-newtype UnmovedKingMove = UnmovedKingMove KingDir
+newtype MovedKingMove = UnmovedKingMove KingDir
 
 data KingDir = KUp | KDown | KLeft | KRight | KUpLeft | KUpRight | KDownRight | KDownLeft
 
-data MovedPawnMove = PawnTwo | UPawnMove UnmovedPawnMove
+data UnmovedPawnMove = PawnTwo | MPawnMove UnmovedPawnMove -- Unmoved pawns can move 2 squares forward
 
-data UnmovedPawnMove = PawnOne | PawnAttack PawnDir
+data MovedPawnMove = PawnOne | PawnAttack PawnDir
 
 data PawnDir = PLeft | PRight
 
