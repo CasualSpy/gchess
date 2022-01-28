@@ -27,6 +27,7 @@ library
   exposed-modules:
       Board
       Lib
+      Moves
   other-modules:
       Paths_gchess
   hs-source-dirs:
