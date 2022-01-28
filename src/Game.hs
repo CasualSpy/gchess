@@ -1,24 +1,29 @@
+{-# LANGUAGE OverloadedLists #-}
+
 module Game where
 
 import Board
 import Data.Array.IArray
+import qualified Data.Sequence as S
+import Moves
 
 data Game = Game
   { currentPlayer :: Color,
-    board :: Board
+    gameBoard :: Board
   }
 
 initialGame :: Game
-initialGame = Game {currentPlayer = White, board = listArray ((A, One), (H, Eight)) pieceList}
+initialGame = Game {currentPlayer = White, gameBoard = listArray ((A, One), (H, Eight)) pieceList}
   where
     pieceList :: [Maybe Piece]
-    pieceList = whitePieces ++ replicate 32 Nothing ++ blackPieces
+    pieceList = pieceOrder >>= mkFile
+
+    mkFile :: PieceType -> [Maybe Piece]
+    mkFile pt = [Just $ Piece White pt, Just $ Piece White UnmovedPawn, Nothing, Nothing, Nothing, Nothing, Just $ Piece Black UnmovedPawn, Just $ Piece Black pt]
 
     pieceOrder :: [PieceType]
     pieceOrder = [UnmovedRook, Knight, Bishop, Queen, UnmovedKing, Bishop, Knight, UnmovedRook]
 
-    whitePieces :: [Maybe Piece]
-    whitePieces = fmap (maybePiece White) $ pieceOrder ++ replicate 8 UnmovedPawn
-
-    blackPieces :: [Maybe Piece]
-    blackPieces = fmap (maybePiece Black) $ replicate 8 UnmovedPawn ++ pieceOrder
+projectMove :: Move -> Board -> S.Seq Square
+projectMove (Move (MKingMv KUp) (r, f) piece) board = if f == Eight || fmap color (pieceAt board (r, succ f)) == Just (color piece) then [] else [(r, succ f)]
+projectMove _ _ = error "Not yet implemented"
