@@ -12,13 +12,17 @@ data PieceType
   | MovedKing
   | UnmovedRook -- Castling requires the rook to never have moved
   | MovedRook
-  deriving (Eq)
+  deriving (Eq, Show)
 
-newtype EnPassantStatus = EnPassantStatus Bool deriving (Eq)
+newtype EnPassantStatus = EnPassantStatus Bool deriving (Eq, Show)
 
-data Color = Black | White deriving (Eq)
+data Color = Black | White deriving (Eq, Show)
 
-data Piece = Piece Color PieceType deriving (Eq)
+data Piece = Piece
+  { color :: Color,
+    pieceType :: PieceType
+  }
+  deriving (Eq, Show)
 
 data Rank = A | B | C | D | E | F | G | H deriving (Show, Eq, Enum, Ord, Ix)
 

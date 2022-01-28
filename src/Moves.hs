@@ -1,38 +1,39 @@
 module Moves where
 
-import Board (Square)
+import Board (Piece, Square)
 
 data MoveType
-  = MKingMv MovedKingMove
-  | UKingMv UnmovedKingMove
+  = UKingMv UnmovedKingMove
+  | MKingMv MovedKingMove
   | MPawnMv MovedPawnMove
   | UPawnMv UnmovedPawnMove
   | RookMv StraightMove
   | BishopMv DiagonalMove
   | KnightMv KnightMove
   | QueenMv QueenMove
+  deriving (Show)
 
-data UnmovedKingMove = CastleLong | CastleShort | MKingMove KingDir -- Unmoved kings can castle
+data UnmovedKingMove = CastleLong | CastleShort | MKingMove MovedKingMove deriving (Show) -- Unmoved kings can castle
 
-newtype MovedKingMove = UnmovedKingMove KingDir
+data MovedKingMove = KUp | KDown | KLeft | KRight | KUpLeft | KUpRight | KDownRight | KDownLeft deriving (Show)
 
-data KingDir = KUp | KDown | KLeft | KRight | KUpLeft | KUpRight | KDownRight | KDownLeft
+data UnmovedPawnMove = PawnTwo | MPawnMove UnmovedPawnMove deriving (Show) -- Unmoved pawns can move 2 squares forward
 
-data UnmovedPawnMove = PawnTwo | MPawnMove UnmovedPawnMove -- Unmoved pawns can move 2 squares forward
+data MovedPawnMove = PawnOne | PawnAttack PawnDir deriving (Show)
 
-data MovedPawnMove = PawnOne | PawnAttack PawnDir
+data PawnDir = PLeft | PRight deriving (Show)
 
-data PawnDir = PLeft | PRight
+data StraightMove = StrUp | StrDown | StrLeft | StrRight deriving (Show)
 
-data StraightMove = StrUp Int | StrDown Int | StrLeft Int | StrRight Int
+data DiagonalMove = DiagUpLeft | DiagUpRight | DiagDownLeft | DiagDownRight deriving (Show)
 
-data DiagonalMove = DiagUpLeft Int | DiagUpRight Int | DiagDownLeft Int | DiagDownRight Int
+data KnightMove = NUpLeft | NUpRight | NRightUp | NRightDown | NDownRight | NDownLeft | NLeftDown | NLeftUp deriving (Show)
 
-data KnightMove = NUpLeft | NUpRight | NRightUp | NRightDown | NDownRight | NDownLeft | NLeftDown | NLeftUp
-
-data QueenMove = QueenStraight StraightMove | QueenDiagonal DiagonalMove
+data QueenMove = QueenStraight StraightMove | QueenDiagonal DiagonalMove deriving (Show)
 
 data Move = Move
   { moveType :: MoveType,
-    from :: Square
+    from :: Square,
+    by :: Piece
   }
+  deriving (Show)
